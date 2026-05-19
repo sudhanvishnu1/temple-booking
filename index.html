@@ -1,11 +1,420 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Temple Booking</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temple Event Booking</title>
+  <style>
+    :root {
+      --primary: #8b1e3f;
+      --secondary: #f7b731;
+      --bg: #fff8ef;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --border: #eadccc;
+      --success: #087f5b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff8ef, #fff1d6);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary), #c0392b);
+      color: white;
+      padding: 28px 20px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 14px 35px rgba(0,0,0,0.16);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .hero p {
+      margin: 4px 0;
+      font-size: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 14px;
+      background: var(--secondary);
+      color: #351900;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      margin-bottom: 14px;
+      background: #fff;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #fffdf8;
+    }
+
+    .item-title { font-weight: bold; }
+
+    .item-price {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .qty {
+      max-width: 85px;
+      margin: 0;
+    }
+
+    .summary {
+      position: sticky;
+      top: 16px;
+    }
+
+    .total {
+      font-size: 34px;
+      font-weight: bold;
+      color: var(--success);
+      margin: 10px 0;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--border);
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    .pay-box {
+      background: #fff5d6;
+      border: 1px solid #f0d47a;
+      border-radius: 16px;
+      padding: 14px;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover { background: #6f1732; }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .success-message {
+      display: none;
+      background: #e6fcf5;
+      border: 1px solid #96f2d7;
+      color: #064e3b;
+      padding: 14px;
+      border-radius: 14px;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 780px) {
+      .grid, .row { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+      .summary { position: static; }
+    }
+  </style>
 </head>
-<body style="font-family: Arial; text-align:center; padding:40px;">
-  <h1>Temple Booking Website</h1>
-  <p>The website is now live successfully.</p>
-  <h2>Tickets Coming Soon</h2>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Temple Cultural Event Booking</h1>
+      <p>Book your entry tickets, kids events and optional donations in one place.</p>
+      <p><strong>Date:</strong> Saturday, 00 Month 2026 | <strong>Venue:</strong> Temple Hall</p>
+      <span class="badge">Family Friendly • Simple Booking • Free Entry for Under 5s</span>
+    </section>
+
+    <div class="grid">
+      <main>
+        <form id="bookingForm">
+          <section class="card">
+            <h2>1. Family Details</h2>
+            <label for="name">Full Name</label>
+            <input id="name" name="name" required placeholder="Enter your full name" />
+
+            <div class="row">
+              <div>
+                <label for="phone">Mobile Number</label>
+                <input id="phone" name="phone" required placeholder="07XXXXXXXXX" />
+              </div>
+              <div>
+                <label for="email">Email Address</label>
+                <input id="email" name="email" type="email" placeholder="name@email.com" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>2. Entry Tickets</h2>
+            <div class="item">
+              <div>
+                <div class="item-title">Adult Entry Ticket</div>
+                <div class="item-price">£5 per adult</div>
+              </div>
+              <select class="qty" data-price="5" data-label="Adult Entry Ticket">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Child Entry Ticket</div>
+                <div class="item-price">£3 per child</div>
+              </div>
+              <select class="qty" data-price="3" data-label="Child Entry Ticket">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Family Pass</div>
+                <div class="item-price">£15 per family pass</div>
+              </div>
+              <select class="qty" data-price="15" data-label="Family Pass">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>3. Kids Event Participation</h2>
+            <p class="small">Select all events your child/children wish to participate in.</p>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Dance Participation</div>
+                <div class="item-price">£10 per child</div>
+              </div>
+              <select class="qty" data-price="10" data-label="Dance Participation">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Singing Participation</div>
+                <div class="item-price">£8 per child</div>
+              </div>
+              <select class="qty" data-price="8" data-label="Singing Participation">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Drawing Competition</div>
+                <div class="item-price">£5 per child</div>
+              </div>
+              <select class="qty" data-price="5" data-label="Drawing Competition">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">Fancy Dress</div>
+                <div class="item-price">£7 per child</div>
+              </div>
+              <select class="qty" data-price="7" data-label="Fancy Dress">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>4. Optional Add-ons</h2>
+            <div class="item">
+              <div>
+                <div class="item-title">Food Coupon</div>
+                <div class="item-price">£7 each</div>
+              </div>
+              <select class="qty" data-price="7" data-label="Food Coupon">
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              </select>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="item-title">General Donation</div>
+                <div class="item-price">Optional temple donation</div>
+              </div>
+              <select class="qty" data-price="5" data-label="General Donation">
+                <option value="0">£0</option><option value="1">£5</option><option value="2">£10</option><option value="5">£25</option><option value="10">£50</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>5. Payment Details</h2>
+            <p class="small">After submitting this form, please pay the total amount using bank transfer or payment link.</p>
+
+            <label for="paymentRef">Payment Reference / Screenshot Note</label>
+            <input id="paymentRef" name="paymentRef" placeholder="Example: Paid by bank transfer - Ref: Kumar Family" />
+
+            <label for="notes">Any Notes</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Children names, age group, special request, etc."></textarea>
+
+            <button type="submit">Submit Booking</button>
+            <div id="successMessage" class="success-message">Booking ready. Please copy/save the confirmation details and complete payment.</div>
+          </section>
+        </form>
+      </main>
+
+      <aside>
+        <section class="card summary">
+          <h2>Your Total</h2>
+          <div class="total" id="total">£0</div>
+          <div id="summaryList"></div>
+
+          <div class="pay-box">
+            <strong>Payment Options</strong><br />
+            Bank: Temple Account Name<br />
+            Sort Code: 00-00-00<br />
+            Account No: 00000000<br />
+            Reference: Your Name<br /><br />
+            Or use payment link:<br />
+            <strong>Paste Stripe / PayPal / SumUp link here</strong>
+          </div>
+
+          <p class="small">Please make payment after submitting. Your booking will be confirmed once payment is verified.</p>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const qtyInputs = document.querySelectorAll('.qty');
+    const totalEl = document.getElementById('total');
+    const summaryList = document.getElementById('summaryList');
+    const form = document.getElementById('bookingForm');
+    const successMessage = document.getElementById('successMessage');
+
+    function updateTotal() {
+      let total = 0;
+      let lines = [];
+
+      qtyInputs.forEach(input => {
+        const qty = Number(input.value);
+        const price = Number(input.dataset.price);
+        const label = input.dataset.label;
+        const lineTotal = qty * price;
+
+        if (qty > 0) {
+          total += lineTotal;
+          lines.push({ label, qty, lineTotal });
+        }
+      });
+
+      totalEl.textContent = `£${total}`;
+      summaryList.innerHTML = lines.length
+        ? lines.map(line => `<div class="summary-line"><span>${line.qty} × ${line.label}</span><strong>£${line.lineTotal}</strong></div>`).join('')
+        : '<p class="small">No tickets selected yet.</p>';
+
+      return { total, lines };
+    }
+
+    qtyInputs.forEach(input => input.addEventListener('change', updateTotal));
+    updateTotal();
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const booking = updateTotal();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const paymentRef = document.getElementById('paymentRef').value;
+      const notes = document.getElementById('notes').value;
+
+      const confirmation = `Temple Event Booking\n\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\n\nSelected Items:\n${booking.lines.map(line => `${line.qty} x ${line.label} = £${line.lineTotal}`).join('\n')}\n\nTotal: £${booking.total}\nPayment Reference: ${paymentRef}\nNotes: ${notes}`;
+
+      navigator.clipboard?.writeText(confirmation);
+      successMessage.style.display = 'block';
+      alert(confirmation + '\n\nThis confirmation has been copied if your browser allows it. Please send it to the organiser after payment.');
+    });
+  </script>
 </body>
 </html>
